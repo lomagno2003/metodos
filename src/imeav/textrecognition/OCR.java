@@ -2,7 +2,6 @@ package imeav.textrecognition;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,33 +18,6 @@ import org.opencv.imgproc.*;
 import imeav.utilities.TextBox;
 
 public class OCR implements ITextRecognizer {
-	/**
-	 * Lee un archivo y concatena todas sus lineas en una sola linea
-	 * 
-	 * @param filename
-	 * @return
-	 */
-	public String readFile(String filename) {
-		String content = null;
-		File file = new File(filename); // for ex foo.txt
-		try {
-			FileReader reader = new FileReader(file);
-			char[] chars = new char[(int) file.length()];
-			reader.read(chars);
-			content = new String(chars);
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		String separator = System.lineSeparator();
-
-		// TODO Verificar que anda el caracter "separator
-		String str = content.replaceAll(separator, "");
-
-		return str;
-	}
-
 	/**
 	 * @see{imeav.relationextraction.ITextRecognizer#getText(org.opencv.core.Mat,org.opencv.core.Mat)
 	 */
