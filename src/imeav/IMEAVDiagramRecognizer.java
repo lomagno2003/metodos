@@ -1,16 +1,16 @@
 package imeav;
-import imeav.binarization.Binarizer;
+import imeav.binarization.IBinarizer;
 import imeav.binarization.FloodFillerBinarizer;
 import imeav.elementextraction.CCElementExtractor;
-import imeav.elementextraction.ElementExtractor;
+import imeav.elementextraction.IElementExtractor;
 import imeav.exceptions.InputFileException;
 import imeav.exceptions.OutputFileException;
-import imeav.graphassembly.GraphAssembler;
+import imeav.graphassembly.IGraphAssembler;
 import imeav.graphassembly.ProximityGraph;
 import imeav.preprocessing.BorderExtender;
 import imeav.preprocessing.IPreprocessor;
 import imeav.relationextraction.HoughExtractor;
-import imeav.relationextraction.RelationExtractor;
+import imeav.relationextraction.IRelationExtractor;
 import imeav.textrecognition.OCR;
 import imeav.textrecognition.ITextRecognizer;
 import imeav.textseparation.CCTextSeparator;
@@ -100,13 +100,12 @@ public class IMEAVDiagramRecognizer {
 		Vector<TextBox> textos = reconocedor.getText(original, areasTexto);
 
 		// binarización
-		Binarizer binariz = new FloodFillerBinarizer(135, 0.05, 150);
+		IBinarizer binariz = new FloodFillerBinarizer(135, 0.05, 150);
 		binaria = binariz.binarize(textoBorrado);
 		//showResult(binaria, "Binaria");
 
 		// detección de cajas
-		ElementExtractor boxExtractor = new CCElementExtractor(binaria, 30, 7,
-				0.97);
+		IElementExtractor boxExtractor = new CCElementExtractor(binaria, 30, 7,	0.97);
 		// imshow("Binaria con cajas refinadas",boxExtractor.paintBoxes());
 
 		Vector<Element> boxes = boxExtractor.getBoxes();
@@ -119,12 +118,12 @@ public class IMEAVDiagramRecognizer {
 		//showResult(refinedBoxes, "Módulos");
 
 		// detección de conexiones
-		RelationExtractor hough = new HoughExtractor();
+		IRelationExtractor hough = new HoughExtractor();
 		Vector<Relation> caminos = hough.extract(binaria,boxExtractor.paintBoxes());
 		// ADENTRO DE HOUGH.EXTRACT HAY UN SHOWRESULTS
 
 		// construir grafo
-		GraphAssembler constructorGrafo = new ProximityGraph(original.size(),
+		IGraphAssembler constructorGrafo = new ProximityGraph(original.size(),
 				50, outputFile.getAbsolutePath());
 		constructorGrafo.buildGraph(boxes, textos, caminos);
 		// ADENTRO DE GRAPHBUILD HAY SHOWRESULTS

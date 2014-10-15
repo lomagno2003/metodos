@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.opencv.core.*;
-import org.opencv.highgui.*;
 import org.opencv.imgproc.*;
-import org.opencv.utils.Converters;
-
 import imeav.utilities.Element;
 
 

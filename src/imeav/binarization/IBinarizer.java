@@ -2,9 +2,9 @@ package imeav.binarization;
 
 import org.opencv.core.*;
 
-public interface Binarizer {
+public interface IBinarizer {
 	/**
-	 * TODO Ver que poronga hace este binarizer
+	 * TODO
 	 * 
 	 * @param input
 	 * @return

@@ -3,14 +3,12 @@ package imeav.relationextraction;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +26,7 @@ import org.opencv.imgproc.*;
 import imeav.utilities.Relation;
 import imeav.utilities.Vec4i;
 
-public class HoughExtractor extends RelationExtractor
+public class HoughExtractor implements IRelationExtractor
 {
 	//public String dirBase;
 	
@@ -71,6 +69,7 @@ public class HoughExtractor extends RelationExtractor
 		
 	}
 
+@Override
 public Vector<Relation> extract(Mat binary, Mat boxes) {
 
     segmentList = extractLines(binary,boxes);

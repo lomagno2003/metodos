@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -115,7 +113,7 @@ public class CCBoxDetector
 	    ////////////////////////////////////////////////////
 
 	    Rect mbr= Imgproc.boundingRect(contours_nuevo.get(0));
-	    if (Imgproc.contourArea(contours_nuevo.get(0)) / (double)((mbr.width-1)*(mbr.height-1)) > RECTANGULARIDAD_MIN)
+	    if (Imgproc.contourArea(contours_nuevo.get(0)) / ((mbr.width-1)*(mbr.height-1)) > RECTANGULARIDAD_MIN)
 	        return contours_nuevo.get(0);
 
 	    return new MatOfPoint();

@@ -2,7 +2,6 @@ package imeav.graphassembly;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -25,29 +24,10 @@ import imeav.utilities.TextBox;
 import imeav.utilities.Vec4i;
 
 
-public class ProximityGraph extends GraphAssembler
+public class ProximityGraph implements IGraphAssembler
 {
 	private Vector<String> Modules,Relations,Connections;
 	
-	public static void showResult(Mat img,String titulo) {
-		
-	    //Imgproc.resize(img, img, new Size(640, 480));
-	    MatOfByte matOfByte = new MatOfByte();
-	    Highgui.imencode(".jpg", img, matOfByte);
-	    byte[] byteArray = matOfByte.toArray();
-	    BufferedImage bufImage = null;
-	    try {
-	        InputStream in = new ByteArrayInputStream(byteArray);
-	        bufImage = ImageIO.read(in);
-	        JFrame frame = new JFrame();
-	        frame.setTitle(titulo);
-	        frame.getContentPane().add(new JLabel(new ImageIcon(bufImage)));
-	        frame.pack();
-	        frame.setVisible(true);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
 	public ProximityGraph(Size size,int MAXIMUM_DIST,String writeDir) {
 		s=size;
 		MAXIMUM_DISTANCE=MAXIMUM_DIST;
@@ -55,6 +35,7 @@ public class ProximityGraph extends GraphAssembler
 	}
 
 	private String writeDir;
+	@Override
 	public void buildGraph(Vector<Element> boxes,  Vector<TextBox> textos, Vector<Relation> caminos){
 		
 		Modules=new Vector<String>();

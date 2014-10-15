@@ -7,7 +7,7 @@ import imeav.utilities.Relation;
 import imeav.utilities.TextBox;
 
 
-public abstract class GraphAssembler {
+public interface IGraphAssembler {
 
-	public abstract void buildGraph(Vector<Element> boxes,Vector<TextBox> textos,Vector<Relation> caminos);
+	public void buildGraph(Vector<Element> boxes,Vector<TextBox> textos,Vector<Relation> caminos);
 }

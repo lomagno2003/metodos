@@ -6,7 +6,7 @@ import java.util.List;
 import org.opencv.core.*;
 import org.opencv.imgproc.*;
 
-public class FloodFillerBinarizer implements Binarizer {
+public class FloodFillerBinarizer implements IBinarizer {
 	/* Constantes */
 	private double ELONGATEDNESS_FACTOR;
 	private int PIXELS_MIN;
