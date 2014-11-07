@@ -3,16 +3,20 @@ package imeav.elementextraction;
 import java.util.Vector;
 
 import org.opencv.core.*;
+import org.opencv.highgui.*;
+import org.opencv.imgproc.*;
+
 import imeav.utilities.Element;
 
-public class CCElementExtractor extends IElementExtractor
+public class CCElementExtractor implements IElementExtractor
 {
 
-	@Override
+	private CCBoxDetector detector;
+	private CCBoxRefiner refinador;
+
 	public Vector<Element> getBoxes() {
 		return refinador.getBoxes();
 	}
-	@Override
 	public Mat paintBoxes() {
 		return refinador.paintBoxes();
 	}
@@ -26,7 +30,4 @@ public class CCElementExtractor extends IElementExtractor
 	    refinador.connectBoxes(cajas);
 	}
 
-
-	private CCBoxDetector detector;
-	private CCBoxRefiner refinador;
 };

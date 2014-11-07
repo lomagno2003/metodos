@@ -5,20 +5,25 @@ import java.util.List;
 import java.util.Vector;
 
 import org.opencv.core.*;
+import org.opencv.highgui.*;
 import org.opencv.imgproc.*;
+import org.opencv.utils.Converters;
+
 import imeav.utilities.Element;
 
 
 public class CCBoxRefiner
 {
-
+	private Size size;
+	private List<MatOfPoint> connectedBoxes;
+	private List<MatOfPoint> filteredFP;
+	private List< Integer > agregados;
+	
 	public CCBoxRefiner() {
 		connectedBoxes=new ArrayList<MatOfPoint>();
 		filteredFP=new ArrayList<MatOfPoint>();
 		agregados=new ArrayList<Integer>();
 	}
-
-
 
 	public void connectBoxes(Mat input) {
 
@@ -47,7 +52,10 @@ public class CCBoxRefiner
 				//Converters.
 				if (connectedRects(blobs.get(i),blobs.get(j),input.size(),ORcontour,i,j)){
 					noAnalizar.add(j);noAnalizar.add(i);
-					ElementCheck c = new ElementCheck();c.i=i;c.j=j;c.punt=ORcontour;
+					ElementCheck c = new ElementCheck();
+					c.setI(i);
+					c.setJ(j);
+					c.setPunt(ORcontour);
 					Checkeos.add(c);
 					connecting=true;
 				}
@@ -113,12 +121,6 @@ public class CCBoxRefiner
 	    return retorno;
 	}
 
-
-
-	private Size size;
-	//private Vector< Vector<Point> > connectedBoxes;
-	private List<MatOfPoint> connectedBoxes;
-	private List<MatOfPoint> filteredFP;
 	
 	private boolean connectedRects(MatOfPoint i,MatOfPoint j,Size size,MatOfPoint ORcontour,int I,int J) {
 
@@ -272,7 +274,6 @@ public class CCBoxRefiner
 			return true;
 		return false;
 	}
-
 	
 	private int filtrarCajaFP(List<MatOfPoint> contornos,Size size) {
 		//Se unian, ver si hay que filtrar una de las dos. Tener en cuenta que no se superponian! (por eso llego aca)
@@ -303,19 +304,22 @@ public class CCBoxRefiner
 
 		return -1;
 	}
+	
 	private int arribaDe(Rect rI,Rect rJ) {
 		if (rI.y < rJ.y)
 			return 0;
 		return 1;
 	}
+	
 	private int izquierdaDe(Rect rI,Rect rJ) {
 		return 0;
 	}
-	private boolean checkReplacement(int i,MatOfPoint blobsI,Vector<ElementCheck> Checkeos) {
+	
+    private boolean checkReplacement(int i,MatOfPoint blobsI,Vector<ElementCheck> Checkeos) {
 
 		for (int g=0;g<Checkeos.size();g++){
-			if (i==Checkeos.get(g).j){
-				MatOfPoint punt=Checkeos.get(g).punt;
+			if (i==Checkeos.get(g).getJ()){
+				MatOfPoint punt=Checkeos.get(g).getPunt();
 				//for (int i1=0;i1<punt.size();i1++)
 					//blobsI.add(punt.get(i1));
 				blobsI.push_back(punt);
@@ -401,7 +405,7 @@ public class CCBoxRefiner
 
 		return -1;
 	}
-	private List< Integer > agregados;
+
 	private boolean isIn(int i) {
 
 		for (int j=0;j<agregados.size();j++)
