@@ -35,6 +35,13 @@ public class ResultsWindow extends JDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private IMEAVDiagramRecognizer imeav;
+	public IMEAVDiagramRecognizer getImeav() {
+		return imeav;
+	}
+	public void setImeav(IMEAVDiagramRecognizer imeav) {
+		this.imeav = imeav;
+		showResult(imeav.getOriginalColor(), "Original");
+	}
 	private JLabel lblResult;
 	private ImageIcon imageIconTemp;
 	

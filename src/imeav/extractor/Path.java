@@ -2,8 +2,6 @@ package imeav.extractor;
 
 import imeav.utilities.Relation;
 import imeav.utilities.Vec4i;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -17,18 +15,16 @@ public class Path {
 	private Vector<Vec4i> segmentList;
 	private List< Vector<Integer> > endpointMatrix;
 	private Set< Integer > usados;
-	private double inclusionRatio;
 	
-	public Path(){
-		tolerance=10;
-	    inclusionRatio=0.3;
-	    usados=new HashSet<Integer>();
+	public Path(Set<Integer> _usados){
+		tolerance = 10;
+	    usados = _usados;
 	}
 	
-	public Relation getPath(int index){
+	public Relation getPath(int index,Vector<Vec4i> _segmentList){
 
 	    Vector<Vec4i> caminoUnido = new Vector<Vec4i>();
-
+	    segmentList = _segmentList;
 	    Relation pathIzq=
 	    		avanzar(index,new Point(segmentList.get(index).v0,segmentList.get(index).v1));
 	    Relation pathDer=

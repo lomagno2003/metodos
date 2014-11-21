@@ -14,8 +14,13 @@ import org.opencv.imgproc.Imgproc;
 public class ExtractLine {
 	private Mat cajasDilat;
 	private double inclusionRatio;
-
+	
+	public ExtractLine(){
+		cajasDilat = new Mat();
+		inclusionRatio = 0.3;
+	}
 	public Vector<Vec4i> extractLines(Mat binaria, Mat cajas){
+		cajasDilat = new Mat();
 		Imgproc.morphologyEx(cajas,cajasDilat,Imgproc.MORPH_DILATE,Imgproc.getStructuringElement(Imgproc.MORPH_CROSS,new org.opencv.core.Size(5,5)));
 
 		 Mat notbin = new Mat();

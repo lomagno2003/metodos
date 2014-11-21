@@ -44,21 +44,20 @@ public class OCR implements ITextRecognizer {
 			String ruta = "text";
 			Highgui.imwrite(ruta + ".jpg", textRect);
 
-			// Reconocer texto usando original y r
-			TextBox tb = new TextBox("", r);
 
-			File imageFile = new File(ruta + ".png ");
+			File imageFile = new File(ruta + ".jpg");
 			Tesseract instance = Tesseract.getInstance(); // JNA Interface
 
 			try {
 				BufferedImage image = ImageIO.read(imageFile);
 				String result = instance.doOCR(image);
+				// Reconocer texto usando original y r
+				TextBox tb = new TextBox(result, r);
+				salida.add(tb);
 				System.out.println(result);
 			} catch (TesseractException | IOException e) {
 				System.err.println(e.getMessage());
-			}
-
-			salida.add(tb);
+			}		
 		}
 
 		return salida;
