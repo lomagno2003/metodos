@@ -160,7 +160,8 @@ public class MainWindow {
 				JFileChooser chooser = new JFileChooser();
 				chooser.setMultiSelectionEnabled(true);
 				int option = chooser.showOpenDialog(null);
-				if (option == JFileChooser.APPROVE_OPTION){			
+				if (option == JFileChooser.APPROVE_OPTION){		
+					imagePaths.clear();
 					File[] images = chooser.getSelectedFiles();
 					DefaultListModel<String> model = new DefaultListModel<String>();
 					for(int i = 0; i< images.length; i++){
@@ -199,7 +200,7 @@ public class MainWindow {
 						currentImeav.convert(imagePaths.elementAt(i),
 							OutPutFileTextField.getText()+"\\Output"+i+".dot");						
 					}
-					if (imagePaths.size() > 1){
+					if (imagePaths.size() >= 1){
 						comboBox.setEnabled(true);
 					}
 				} catch (InputFileException e) {

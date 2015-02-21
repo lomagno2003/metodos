@@ -124,7 +124,7 @@ public class IMEAVDiagramRecognizer {
 
 		// construir grafo
 		IGraphAssembler constructorGrafo = new ProximityGraph(original.size(),
-				50, outputFile.getAbsolutePath());
+				200, outputFile.getAbsolutePath());
 		constructorGrafo.buildGraph(boxes, textos, caminos);
 		// ADENTRO DE GRAPHBUILD HAY SHOWRESULTS
 	}
