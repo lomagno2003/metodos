@@ -42,7 +42,7 @@ public class SimilarAngleSegmentFilter implements Filter<Vec4i> {
 		Integer v2y = testVector.v3 - testVector.v1;
 
 		Double angle = Math.atan2(v2y, v2x) - Math.atan2(v1y, v1x);
-		if (angle < threshold) {
+		if (Math.abs(angle) < threshold) {
 			return true;
 		} else {
 			return false;

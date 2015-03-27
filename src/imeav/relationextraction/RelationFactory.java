@@ -80,12 +80,12 @@ public class RelationFactory implements IRelationFactory {
 		Comparator<Integer> higherComparator= new HigherComparator();
 		
 		/* Find max and min extreme using X */
-		Point maxX = getExtreme(segments, xExtractor, higherComparator);
-		Point minX = getExtreme(segments, xExtractor, lowerComparator);
+		Point maxX = getExtreme(resultSegments, xExtractor, xExtractor, yExtractor, higherComparator);
+		Point minX = getExtreme(resultSegments, xExtractor, xExtractor, yExtractor, lowerComparator);
 		
 		/* Find max and min extreme using Y */
-		Point maxY = getExtreme(segments, yExtractor, higherComparator);
-		Point minY = getExtreme(segments, yExtractor, lowerComparator);
+		Point maxY = getExtreme(resultSegments, yExtractor, xExtractor, yExtractor, higherComparator);
+		Point minY = getExtreme(resultSegments, yExtractor, xExtractor, yExtractor, lowerComparator);
 		
 		/* Use the extremes of the max distance between the selected dimension */
 		Point extreme1;
@@ -173,7 +173,7 @@ public class RelationFactory implements IRelationFactory {
 		}
 	}
 
-	private Point getExtreme(List<Vec4i> segments, Extractor extractor,
+	private Point getExtreme(Set<Vec4i> segments, Extractor extractor, Extractor xExtractor, Extractor yExtractor,
 			Comparator<Integer> comparator) {
 		Point extreme = null;
 		for (Vec4i segmentIterator : segments) {
@@ -187,12 +187,12 @@ public class RelationFactory implements IRelationFactory {
 					extractor.extract2(segmentIterator)) > 0) {
 				if (comparator.compare(extractor.extract1(segmentIterator),
 						extractor.extractPoint(extreme)) > 0) {
-					extreme = new Point(segmentIterator.v0, segmentIterator.v1);
+					extreme = new Point(xExtractor.extract1(segmentIterator), yExtractor.extract1(segmentIterator));
 				}
 			} else {
 				if (comparator.compare(extractor.extract2(segmentIterator),
 						extractor.extractPoint(extreme)) > 0) {
-					extreme = new Point(segmentIterator.v0, segmentIterator.v1);
+					extreme = new Point(xExtractor.extract2(segmentIterator), yExtractor.extract2(segmentIterator));
 				}
 			}
 		}
@@ -212,8 +212,8 @@ public class RelationFactory implements IRelationFactory {
 	 */
 	private Set<Vec4i> getNeighbors(Collection<Vec4i> segments,
 			Set<Vec4i> usedSegments, Vec4i unanalyzedSegment) {
-		Double distanceThreshold = null;
-		Double angleThreshold = null;
+		Double distanceThreshold = 0.5;
+		Double angleThreshold = 0.1;
 
 		Filter<Vec4i> filter = new AndFilter<Vec4i>(new OrFilter<Vec4i>(
 				new SegmentToPointDistanceFilter(new Point(
