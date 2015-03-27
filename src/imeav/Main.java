@@ -27,7 +27,7 @@ import imeav.graphassembly.ProximityGraph;
 import imeav.preprocessing.BorderExtender;
 import imeav.preprocessing.IPreprocessor;
 import imeav.relationextraction.IRelationExtractor;
-import imeav.relationextraction.HoughExtractor;
+import imeav.relationextraction.RelationExtractor;
 import imeav.textrecognition.ITextRecognizer;
 import imeav.textrecognition.OCR;
 import imeav.textseparation.CCTextSeparator;
@@ -82,7 +82,7 @@ public class Main {
 		Mat originalColor = Highgui.imread(f.getAbsolutePath());
 
 		if (originalColor.size().height == 0) {
-			System.out.println("No se pudo leer la imágen");
+			System.out.println("No se pudo leer la imï¿½gen");
 			System.exit(0);
 		}
 
@@ -103,12 +103,12 @@ public class Main {
 		ITextRecognizer reconocedor = new OCR();
 		Vector<TextBox> textos = reconocedor.getText(original, areasTexto);
 
-		// binarización
+		// binarizaciï¿½n
 		IBinarizer binariz = new FloodFillerBinarizer(135, 0.05, 150);
 		Mat binaria = binariz.binarize(textoBorrado);
 		showResult(binaria, "Binaria");
 
-		// detección de cajas
+		// detecciï¿½n de cajas
 		IElementExtractor boxExtractor = new CCElementExtractor(binaria, 30, 7,
 				0.97);
 		// imshow("Binaria con cajas refinadas",boxExtractor.paintBoxes());
@@ -121,10 +121,10 @@ public class Main {
 			tmp.add(boxes.get(i1).getPoints());
 			Imgproc.drawContours(refinedBoxes, tmp, -1, new Scalar(255));
 		}
-		showResult(refinedBoxes, "Módulos");
+		showResult(refinedBoxes, "Mï¿½dulos");
 
-		// detección de conexiones
-		IRelationExtractor hough = new HoughExtractor();
+		// detecciï¿½n de conexiones
+		IRelationExtractor hough = new RelationExtractor();
 		Vector<Relation> caminos = hough.extract(binaria,
 				boxExtractor.paintBoxes());
 		// ADENTRO DE HOUGH.EXTRACT HAY UN SHOWRESULTS

@@ -48,7 +48,7 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					//UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					MainWindow window = new MainWindow();
 					window.frmImeav.setVisible(true);
 				} catch (Exception e) {
@@ -111,7 +111,7 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.EAST, btnOutputFileSelection, 103, SpringLayout.WEST, btnInputImageSelection);
 		frmImeav.getContentPane().add(btnOutputFileSelection);
 
-		JButton btnConvertImage = new JButton("Convertir imágenes");
+		JButton btnConvertImage = new JButton("Convertir imï¿½genes");
 		springLayout.putConstraint(SpringLayout.SOUTH, btnConvertImage, -25, SpringLayout.SOUTH, frmImeav.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, btnConvertImage, -209, SpringLayout.EAST, frmImeav.getContentPane());
 		frmImeav.getContentPane().add(btnConvertImage);
