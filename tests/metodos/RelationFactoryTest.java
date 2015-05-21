@@ -1,4 +1,4 @@
-package metodos;
+package trunk.tests.metodos;
 
 import static org.junit.Assert.*;
 

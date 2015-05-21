@@ -22,7 +22,6 @@ import weka.core.Instances;
 
 public class WekaClassifier implements IPointClassifier {
 	private Classifier classifier;
-
 	private Integer size = null;
 	private Instances instances = null;
 	

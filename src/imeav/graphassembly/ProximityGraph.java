@@ -21,7 +21,6 @@ public class ProximityGraph implements IGraphAssembler {
 	private PathConnector pathConnector;
 	private TextConnector textConnector;
 	private GraphExporter graphExporter;
-
 	private String outputPath;
 
 	public ProximityGraph(Size size, int maxDistance, String outputPath) {

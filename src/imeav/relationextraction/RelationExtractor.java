@@ -17,25 +17,35 @@ import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
 public class RelationExtractor implements IRelationExtractor {	
-	private ISegmentExtractor linesExtractor = new HoughSegmentExtractor();
-	private IRelationFactory relationFactory = new RelationFactory();
+	private ISegmentExtractor linesExtractor;
+	private IRelationFactory relationFactory;
+	private IPointClassifier pointClassifier;
 
+	public RelationExtractor() {
+		linesExtractor = new HoughSegmentExtractor();
+		relationFactory = new RelationFactory();
+		try {
+			pointClassifier = new BayessianClassifier();
+		} catch (IOException e) {
+			pointClassifier = null;
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public Vector<Relation> extract(Mat binary, Mat boxes) {
-		try {
-			/*Get all the segments */
-			List<Vec4i> segmentList = linesExtractor.extractLines(binary, boxes);
+		/*Get all the segments */
+		List<Vec4i> segmentList = linesExtractor.extractLines(binary, boxes);
 
-			//TODO Por que los ordena?
-			Collections.sort(segmentList, new SegmentLengthComparator());
-			Collections.reverse(segmentList);
-			
-			// Crea la lista de caminos.
-			Vector<Relation> listaCaminos= new Vector<Relation>(relationFactory.getRelations(segmentList));
-
-			IPointClassifier pointClassifier = new BayessianClassifier();
-			
+		//TODO Por que los ordena?
+		Collections.sort(segmentList, new SegmentLengthComparator());
+		Collections.reverse(segmentList);
+		
+		// Crea la lista de caminos.
+		Vector<Relation> listaCaminos= new Vector<Relation>(relationFactory.getRelations(segmentList));
+		
+		/* Classify extreme points */
+		if(pointClassifier != null){
 			int pointType;
 			Mat huf;
 			for (int i = 0; i < listaCaminos.size(); i++) {
@@ -54,14 +64,9 @@ public class RelationExtractor implements IRelationExtractor {
 				}
 
 			}
-
-			return listaCaminos;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
-		return null;
+		return listaCaminos;
 	}
 
 	/**

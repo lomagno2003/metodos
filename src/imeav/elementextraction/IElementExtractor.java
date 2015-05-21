@@ -10,8 +10,6 @@ import imeav.utilities.Element;
 
 public interface IElementExtractor
 {
-
-
 	public Vector<Element> getBoxes();
 	public Mat paintBoxes();
 

@@ -14,13 +14,6 @@ public class CCElementExtractor implements IElementExtractor
 	private CCBoxDetector detector;
 	private CCBoxRefiner refinador;
 
-	public Vector<Element> getBoxes() {
-		return refinador.getBoxes();
-	}
-	public Mat paintBoxes() {
-		return refinador.paintBoxes();
-	}
-
 	public CCElementExtractor(Mat input, int min_area,int tam_conex,double rectang_min) {
 		detector= new CCBoxDetector(min_area,tam_conex,rectang_min);
 
@@ -28,6 +21,13 @@ public class CCElementExtractor implements IElementExtractor
 	    refinador= new CCBoxRefiner();
 
 	    refinador.connectBoxes(cajas);
+	}
+	
+	public Vector<Element> getBoxes() {
+		return refinador.getBoxes();
+	}
+	public Mat paintBoxes() {
+		return refinador.paintBoxes();
 	}
 
 };

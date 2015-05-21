@@ -46,18 +46,18 @@ public class OCR implements ITextRecognizer {
 
 
 			File imageFile = new File(ruta + ".jpg");
-//			Tesseract instance = Tesseract.getInstance(); // JNA Interface
-//
-//			try {
-//				BufferedImage image = ImageIO.read(imageFile);
-//				String result = instance.doOCR(image);
-//				// Reconocer texto usando original y r
-//				TextBox tb = new TextBox(result, r);
-//				salida.add(tb);
-//				System.out.println(result);
-//			} catch (TesseractException | IOException e) {
-//				System.err.println(e.getMessage());
-//			}		
+			Tesseract instance = Tesseract.getInstance(); // JNA Interface
+
+			try {
+				BufferedImage image = ImageIO.read(imageFile);
+				String result = instance.doOCR(image);
+				// Reconocer texto usando original y r
+				TextBox tb = new TextBox(result, r);
+				salida.add(tb);
+				System.out.println(result);
+			} catch (TesseractException | IOException e) {
+				System.err.println(e.getMessage());
+			}		
 		}
 
 		return salida;
