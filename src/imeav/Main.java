@@ -22,6 +22,7 @@ import imeav.binarization.IBinarizer;
 import imeav.binarization.FloodFillerBinarizer;
 import imeav.elementextraction.IElementExtractor;
 import imeav.elementextraction.CCElementExtractor;
+import imeav.graphassembly.GraphContext;
 import imeav.graphassembly.IGraphAssembler;
 import imeav.graphassembly.ProximityGraph;
 import imeav.preprocessing.BorderExtender;
@@ -123,15 +124,18 @@ public class Main {
 		}
 		showResult(refinedBoxes, "M�dulos");
 
+		GraphContext graphContext = new GraphContext();
+		graphContext.setBoxType("Module");
+		
 		// detecci�n de conexiones
-		IRelationExtractor hough = new RelationExtractor();
+		IRelationExtractor hough = new RelationExtractor(graphContext);
 		Vector<Relation> caminos = hough.extract(binaria,
 				boxExtractor.paintBoxes());
 		// ADENTRO DE HOUGH.EXTRACT HAY UN SHOWRESULTS
 
 		// construir grafo
 		IGraphAssembler constructorGrafo = new ProximityGraph(original.size(),
-				50, Wf.getAbsolutePath());
+				50, Wf.getAbsolutePath(), graphContext);
 		constructorGrafo.buildGraph(boxes, textos, caminos);
 		// ADENTRO DE GRAPHBUILD HAY SHOWRESULTS
 

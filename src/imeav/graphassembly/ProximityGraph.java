@@ -21,15 +21,16 @@ public class ProximityGraph implements IGraphAssembler {
 	private PathConnector pathConnector;
 	private TextConnector textConnector;
 	private GraphExporter graphExporter;
+	
 	private String outputPath;
 
-	public ProximityGraph(Size size, int maxDistance, String outputPath) {
+	public ProximityGraph(Size size, int maxDistance, String outputPath, GraphContext graphContext) {
 		this.outputPath = outputPath;
 
 		this.hierarchyConstructor = new HierarchyConstructor(size);
 		this.pathConnector = new PathConnector(maxDistance);
 		this.textConnector = new TextConnector(maxDistance);
-		this.graphExporter = new GraphExporter();
+		this.graphExporter = new GraphExporter(graphContext);
 	}
 
 	@Override

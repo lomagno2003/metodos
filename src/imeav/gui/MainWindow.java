@@ -76,7 +76,7 @@ public class MainWindow {
 		frmImeav = new JFrame();
 		frmImeav.setResizable(false);
 		frmImeav.setTitle("IMEAV ");
-		frmImeav.setBounds(100, 100, 635, 329);
+		frmImeav.setBounds(100, 100, 650, 329);
 		frmImeav.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmImeav.getContentPane().setLayout(springLayout);

@@ -1,5 +1,6 @@
 package imeav.relationextraction;
 
+import imeav.graphassembly.GraphContext;
 import imeav.relationextraction.pointclassifier.BayessianClassifier;
 import imeav.relationextraction.pointclassifier.IPointClassifier;
 import imeav.utilities.Relation;
@@ -16,36 +17,31 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 
-public class RelationExtractor implements IRelationExtractor {	
-	private ISegmentExtractor linesExtractor;
-	private IRelationFactory relationFactory;
-	private IPointClassifier pointClassifier;
+public class RelationExtractor implements IRelationExtractor {
+	private ISegmentExtractor linesExtractor = new HoughSegmentExtractor();
+	private IRelationFactory relationFactory = new RelationFactory();
+	private IRelationPostProcessor relationPostProcessor;
 
-	public RelationExtractor() {
-		linesExtractor = new HoughSegmentExtractor();
-		relationFactory = new RelationFactory();
-		try {
-			pointClassifier = new BayessianClassifier();
-		} catch (IOException e) {
-			pointClassifier = null;
-			e.printStackTrace();
-		}
+	public RelationExtractor(GraphContext graphContext) {
+		super();
+		this.relationPostProcessor = new ComponentsAndConnectorsProcessor(graphContext);
 	}
 
 	@Override
 	public Vector<Relation> extract(Mat binary, Mat boxes) {
-		/*Get all the segments */
-		List<Vec4i> segmentList = linesExtractor.extractLines(binary, boxes);
+		try {
+			/*Get all the segments */
+			List<Vec4i> segmentList = linesExtractor.extractLines(binary, boxes);
 
-		//TODO Por que los ordena?
-		Collections.sort(segmentList, new SegmentLengthComparator());
-		Collections.reverse(segmentList);
-		
-		// Crea la lista de caminos.
-		Vector<Relation> listaCaminos= new Vector<Relation>(relationFactory.getRelations(segmentList));
-		
-		/* Classify extreme points */
-		if(pointClassifier != null){
+			//TODO Por que los ordena?
+			Collections.sort(segmentList, new SegmentLengthComparator());
+			Collections.reverse(segmentList);
+			
+			// Crea la lista de caminos.
+			Vector<Relation> listaCaminos= new Vector<Relation>(relationFactory.getRelations(segmentList));
+			
+			IPointClassifier pointClassifier = new BayessianClassifier();
+			
 			int pointType;
 			Mat huf;
 			for (int i = 0; i < listaCaminos.size(); i++) {
@@ -62,11 +58,16 @@ public class RelationExtractor implements IRelationExtractor {
 					pointType = pointClassifier.classify(huf);
 					listaCaminos.get(i).setTipoExt2(pointType);
 				}
-
 			}
+			
+			this.relationPostProcessor.process(listaCaminos);
+
+			return listaCaminos;
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		return listaCaminos;
+		return null;
 	}
 
 	/**

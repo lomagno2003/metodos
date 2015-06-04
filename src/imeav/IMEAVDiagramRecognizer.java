@@ -5,6 +5,7 @@ import imeav.elementextraction.CCElementExtractor;
 import imeav.elementextraction.IElementExtractor;
 import imeav.exceptions.InputFileException;
 import imeav.exceptions.OutputFileException;
+import imeav.graphassembly.GraphContext;
 import imeav.graphassembly.IGraphAssembler;
 import imeav.graphassembly.ProximityGraph;
 import imeav.preprocessing.BorderExtender;
@@ -64,9 +65,11 @@ public class IMEAVDiagramRecognizer {
 		File inputFile = new File(inputFilePath);
 		File outputFile = new File(outputFilePath);
 		if (!inputFile.canRead()){
+			//TODO: Use IOException
 			throw new InputFileException();
 		}
 		try {
+			//TODO: Use IOException
 			outputFile.createNewFile();
 		} catch (IOException e) {
 			throw new OutputFileException();
@@ -82,8 +85,6 @@ public class IMEAVDiagramRecognizer {
 			System.exit(0);
 		}
 
-		//showResult(originalColor, "Original");
-
 		// Preprocesamiento
 		IPreprocessor prepro = new BorderExtender();
 		Mat original = prepro.preprocess(originalColor);
@@ -92,8 +93,6 @@ public class IMEAVDiagramRecognizer {
 		ITextSeparator separator = new CCTextSeparator();
 		areasTexto = separator.getText(original);
 		textoBorrado = separator.eraseText(original, areasTexto);
-		//showResult(textoBorrado, "Estructura");
-		//showResult(areasTexto, "Texto");
 
 		// reconocer texto
 		ITextRecognizer reconocedor = new OCR();
@@ -102,11 +101,9 @@ public class IMEAVDiagramRecognizer {
 		// binarizaci�n
 		IBinarizer binariz = new FloodFillerBinarizer(135, 0.05, 150);
 		binaria = binariz.binarize(textoBorrado);
-		//showResult(binaria, "Binaria");
 
 		// detecci�n de cajas
 		IElementExtractor boxExtractor = new CCElementExtractor(binaria, 30, 7,	0.97);
-		// imshow("Binaria con cajas refinadas",boxExtractor.paintBoxes());
 
 		Vector<Element> boxes = boxExtractor.getBoxes();
 		refinedBoxes = Mat.zeros(binaria.rows(), binaria.cols(),CvType.CV_8UC1);
@@ -115,16 +112,18 @@ public class IMEAVDiagramRecognizer {
 			tmp.add(boxes.get(i1).getPoints());
 			Imgproc.drawContours(refinedBoxes, tmp, -1, new Scalar(255));
 		}
-		//showResult(refinedBoxes, "M�dulos");
 
+		GraphContext graphContext = new GraphContext();
+		graphContext.setBoxType("Module");
+		
 		// detecci�n de conexiones
-		IRelationExtractor hough = new RelationExtractor();
+		IRelationExtractor hough = new RelationExtractor(graphContext);
 		Vector<Relation> caminos = hough.extract(binaria,boxExtractor.paintBoxes());
 		// ADENTRO DE HOUGH.EXTRACT HAY UN SHOWRESULTS
 
 		// construir grafo
 		IGraphAssembler constructorGrafo = new ProximityGraph(original.size(),
-				200, outputFile.getAbsolutePath());
+				200, outputFile.getAbsolutePath(), graphContext);
 		constructorGrafo.buildGraph(boxes, textos, caminos);
 		// ADENTRO DE GRAPHBUILD HAY SHOWRESULTS
 	}

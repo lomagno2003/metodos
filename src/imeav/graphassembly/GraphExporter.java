@@ -17,6 +17,12 @@ import java.util.Vector;
  *
  */
 public class GraphExporter {
+	private GraphContext graphContext;
+	
+	public GraphExporter(GraphContext graphContext){
+		this.graphContext = graphContext;
+	}
+	
 	public void export(Vector<Relation> caminosValidos, Vector<Element> boxes,
 			String writeDir) {
 		Vector<String> Modules = new Vector<String>();
@@ -91,7 +97,7 @@ public class GraphExporter {
 			String str = new String(Integer.toString(boxes.get(i).getId())
 					+ " [label=" + "\""
 					+ Integer.toString(boxes.get(i).getId())
-					+ ", Type='Module', Name='" + separatedByCommaText + "'\""
+					+ ", Type='" + graphContext.getBoxType() + "', Name='" + separatedByCommaText + "'\""
 					+ "]" + ";");
 			Modules.add(str);
 

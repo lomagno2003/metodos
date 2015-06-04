@@ -17,6 +17,7 @@ public class Relation {
 		b1 = -1;
 		b2 = -2;
 		textos = new Vector<TextBox>();
+		vec = new Vector<Vec4i>();
 	}
 
 	public Vector<Vec4i> getSegments() {

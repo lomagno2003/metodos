@@ -24,6 +24,9 @@ import org.opencv.core.Point;
  *
  */
 public class RelationFactory implements IRelationFactory {
+	private double distanceThreshold = 0.1;
+	private double angleThreshold = 0.1;
+
 	@Override
 	public Set<Relation> getRelations(List<Vec4i> segments) {
 		Set<Relation> result = new HashSet<Relation>();
@@ -212,9 +215,6 @@ public class RelationFactory implements IRelationFactory {
 	 */
 	private Set<Vec4i> getNeighbors(Collection<Vec4i> segments,
 			Set<Vec4i> usedSegments, Vec4i unanalyzedSegment) {
-		Double distanceThreshold = 0.5;
-		Double angleThreshold = 0.1;
-
 		Filter<Vec4i> filter = new AndFilter<Vec4i>(new OrFilter<Vec4i>(
 				new SegmentToPointDistanceFilter(new Point(
 						unanalyzedSegment.v0, unanalyzedSegment.v1),
