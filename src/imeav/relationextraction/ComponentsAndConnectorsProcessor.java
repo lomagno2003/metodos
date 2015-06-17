@@ -66,9 +66,7 @@ public class ComponentsAndConnectorsProcessor implements IRelationPostProcessor 
 		}
 		
 		/* Remove the detected relations and add the new ones */
-		for(ComponentsAndConnectorRelation detectedRelation : detectedRelations){
-			System.out.println("LA RE CONCHA DE LA LORA");
-			
+		for(ComponentsAndConnectorRelation detectedRelation : detectedRelations){			
 			/* If i detect at least one C&C relation, the diagram should be a C&C */
 			this.graphContext.setBoxType("Component");
 			
